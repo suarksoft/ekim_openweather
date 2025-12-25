@@ -1,0 +1,63 @@
+<%- include('../layouts/header') %>
+
+<h2 class="mb-4">Tarla Düzenle</h2>
+
+<% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            <% errors.forEach(error => { %>
+                <li><%= error.msg %></li>
+            <% }) %>
+        </ul>
+    </div>
+<% } %>
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card shadow">
+            <div class="card-body">
+                <form method="POST" action="/farms/<%= farm.id %>">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Tarla Adı <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" 
+                               value="<%= farm.name %>" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="city" class="form-label">Şehir <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="city" name="city" 
+                                   value="<%= farm.city %>" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="district" class="form-label">İlçe <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="district" name="district" 
+                                   value="<%= farm.district %>" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="crop_type" class="form-label">Ürün Tipi</label>
+                        <input type="text" class="form-control" id="crop_type" name="crop_type" 
+                               value="<%= farm.crop_type || '' %>" 
+                               placeholder="Örn: Buğday, Mısır, Pamuk">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="area_decare" class="form-label">Alan (Dekar) <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="area_decare" name="area_decare" 
+                               step="0.01" min="0.01" value="<%= farm.area_decare %>" required>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/farms" class="btn btn-secondary">İptal</a>
+                        <button type="submit" class="btn btn-success">Güncelle</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../layouts/footer') %>
+

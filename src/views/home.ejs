@@ -1,0 +1,110 @@
+<%- include('layouts/header') %>
+
+<div class="row">
+    <div class="col-12">
+        <div class="jumbotron bg-success text-white p-5 rounded mb-4">
+           
+            <% if (typeof user === 'undefined' || !user) { %>
+                <div class="mt-4">
+                    <a href="/auth/register" class="btn btn-light btn-lg me-2">Hemen Kayıt Ol</a>
+                    <a href="/auth/login" class="btn btn-outline-light btn-lg">Giriş Yap</a>
+                </div>
+            <% } else { %>
+                <div class="mt-4">
+                    <p class="mb-0">Hoş geldiniz, <strong><%= user.name || user.email %></strong>!</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<% if (typeof user !== 'undefined' && user) { %>
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-info text-white">
+                <h3>Bugün Ekim İçin Uygun Mu?</h3>
+            </div>
+            <div class="card-body">
+                <p class="lead">Ekim Karar Asistanı, hava durumu verilerini analiz ederek size en uygun ekim zamanını belirlemenize yardımcı olur.</p>
+                <p>Uygulama şu özellikleri sunar:</p>
+                <ul>
+                    <li><strong>Tarla Yönetimi:</strong> Tarlalarınızı kaydedin, düzenleyin ve yönetin</li>
+                    <li><strong>Akıllı Karar Sistemi:</strong> Hava durumu verilerine göre otomatik ekim kararı önerileri</li>
+                    <li><strong>Karar Geçmişi:</strong> Geçmiş kararlarınızı görüntüleyin ve takip edin</li>
+                    <li><strong>Hava Durumu Analizi:</strong> Sıcaklık, yağış, rüzgar gibi kritik parametreleri değerlendirme</li>
+                </ul>
+                <hr>
+                <div class="d-grid gap-2">
+                    <a href="/decisions/new" class="btn btn-success btn-lg">
+                        📅 Hemen Karar Al
+                    </a>
+                    <a href="/farms/new" class="btn btn-outline-primary">
+                        🚜 Yeni Tarla Ekle
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% } else { %>
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-info text-white">
+                <h3>Bugün Ekim İçin Uygun Mu?</h3>
+            </div>
+            <div class="card-body">
+                <p class="lead">Ekim Karar Asistanı, hava durumu verilerini analiz ederek size en uygun ekim zamanını belirlemenize yardımcı olur.</p>
+                <p>Uygulamayı kullanmaya başlamak için lütfen giriş yapın veya yeni bir hesap oluşturun.</p>
+                <hr>
+                <div class="d-grid gap-2">
+                    <a href="/auth/register" class="btn btn-success btn-lg">
+                        📝 Hemen Kayıt Ol
+                    </a>
+                    <a href="/auth/login" class="btn btn-outline-primary">
+                        🔐 Giriş Yap
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% } %>
+
+<% if (typeof user !== 'undefined' && user) { %>
+<div class="row mt-4">
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h2 class="text-success">🚜</h2>
+                <h5>Tarla Yönetimi</h5>
+                <p>Tarlalarınızı ekleyin, düzenleyin ve yönetin</p>
+                <a href="/farms" class="btn btn-outline-success">Tarlalarım</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h2 class="text-info">🌦️</h2>
+                <h5>Hava Durumu</h5>
+                <p>Gerçek zamanlı hava durumu verileri ile karar alın</p>
+                <a href="/decisions/new" class="btn btn-outline-info">Karar Al</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h2 class="text-warning">📊</h2>
+                <h5>Karar Geçmişi</h5>
+                <p>Geçmiş kararlarınızı görüntüleyin ve analiz edin</p>
+                <a href="/decisions" class="btn btn-outline-warning">Geçmiş</a>
+            </div>
+        </div>
+    </div>
+</div>
+<% } %>
+
+<%- include('layouts/footer') %>

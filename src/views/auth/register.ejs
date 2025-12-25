@@ -1,0 +1,65 @@
+<%- include('../layouts/header') %>
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0 text-center">📝 Kayıt Ol</h3>
+            </div>
+            <div class="card-body">
+                <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            <% errors.forEach(error => { %>
+                                <li><%= error.msg %></li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                <% } %>
+
+                <form method="POST" action="/auth/register">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">E-posta Adresi <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="email" name="email" 
+                               value="<%= typeof user !== 'undefined' && user.email ? user.email : '' %>" 
+                               placeholder="ornek@email.com" required autofocus>
+                        <div class="form-text">Bu e-posta adresi ile giriş yapacaksınız.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="full_name" class="form-label">Ad Soyad</label>
+                        <input type="text" class="form-control" id="full_name" name="full_name" 
+                               value="<%= typeof user !== 'undefined' && user.full_name ? user.full_name : '' %>" 
+                               placeholder="Adınız ve Soyadınız (opsiyonel)">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Şifre <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" id="password" name="password" 
+                               placeholder="En az 6 karakter, büyük harf, küçük harf ve rakam içermeli" required>
+                        <div class="form-text">Şifre en az 6 karakter olmalı ve en az bir büyük harf, bir küçük harf ve bir rakam içermelidir.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password_confirm" class="form-label">Şifre Tekrar <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" id="password_confirm" name="password_confirm" 
+                               placeholder="Şifrenizi tekrar giriniz" required>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">Kayıt Ol</button>
+                    </div>
+                </form>
+
+                <hr>
+
+                <div class="text-center">
+                    <p class="mb-0">Zaten hesabınız var mı? <a href="/auth/login">Giriş yapın</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../layouts/footer') %>
+

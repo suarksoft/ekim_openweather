@@ -1,0 +1,114 @@
+<%- include('../layouts/header') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Karar Detayı #<%= decision.id %></h2>
+    <div>
+        <a href="/decisions" class="btn btn-secondary">Geri Dön</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <!-- Karar Özeti -->
+        <div class="card shadow mb-4">
+            <div class="card-header 
+                <%= decision.decision_status === 'UYGUN' ? 'bg-success' : (decision.decision_status === 'UYGUN_DEGIL' ? 'bg-danger' : 'bg-warning') %> 
+                text-white">
+                <h4 class="mb-0">
+                    <% if (decision.decision_status === 'UYGUN') { %>
+                        ✅ Ekim İçin UYGUN
+                    <% } else if (decision.decision_status === 'UYGUN_DEGIL') { %>
+                        ❌ Ekim İçin UYGUN DEĞİL
+                    <% } else { %>
+                        ⚠️ UYARI
+                    <% } %>
+                </h4>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Tarla:</dt>
+                    <dd class="col-sm-8"><strong><%= decision.farm_name %></strong> (<%= decision.city %>, <%= decision.district %>)</dd>
+
+                    <dt class="col-sm-4">Ürün Tipi:</dt>
+                    <dd class="col-sm-8"><%= decision.crop_type %></dd>
+
+                    <dt class="col-sm-4">Karar Durumu:</dt>
+                    <dd class="col-sm-8">
+                        <% if (decision.decision_status === 'UYGUN') { %>
+                            <span class="badge bg-success">UYGUN</span>
+                        <% } else if (decision.decision_status === 'UYGUN_DEGIL') { %>
+                            <span class="badge bg-danger">UYGUN DEĞİL</span>
+                        <% } else if (decision.decision_status === 'UYARI') { %>
+                            <span class="badge bg-warning text-dark">UYARI</span>
+                        <% } else { %>
+                            <span class="badge bg-secondary"><%= decision.decision_status %></span>
+                        <% } %>
+                    </dd>
+
+                    <dt class="col-sm-4">Karar Tarihi:</dt>
+                    <dd class="col-sm-8"><%= new Date(decision.created_at).toLocaleDateString('tr-TR', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }) %></dd>
+                </dl>
+
+                <hr>
+
+                <h5>Karar Gerekçesi:</h5>
+                <div class="alert alert-info">
+                    <p class="mb-0"><%= decision.reason %></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hava Durumu Bilgileri -->
+        <% if (weatherSnapshot) { %>
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">🌦️ Hava Durumu Özeti</h4>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Konum:</dt>
+                        <dd class="col-sm-8"><%= weatherSnapshot.current.location || '-' %></dd>
+
+                        <dt class="col-sm-4">Sıcaklık:</dt>
+                        <dd class="col-sm-8"><strong><%= weatherSnapshot.current.temp.toFixed(1) %>°C</strong></dd>
+
+                        <dt class="col-sm-4">Nem:</dt>
+                        <dd class="col-sm-8"><%= weatherSnapshot.current.humidity %>%</dd>
+
+                        <dt class="col-sm-4">Basınç:</dt>
+                        <dd class="col-sm-8"><%= weatherSnapshot.current.pressure %> hPa</dd>
+
+                        <dt class="col-sm-4">Rüzgar Hızı:</dt>
+                        <dd class="col-sm-8"><%= weatherSnapshot.current.windSpeed.toFixed(1) %> m/s</dd>
+
+                        <dt class="col-sm-4">Hava Durumu:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-primary"><%= weatherSnapshot.current.weather %></span>
+                            <small class="text-muted">(<%= weatherSnapshot.current.description %>)</small>
+                        </dd>
+
+                        <dt class="col-sm-4">Veri Tarihi:</dt>
+                        <dd class="col-sm-8">
+                            <%= new Date(weatherSnapshot.timestamp).toLocaleDateString('tr-TR', { 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            }) %>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<%- include('../layouts/footer') %>
+

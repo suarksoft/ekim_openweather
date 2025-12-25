@@ -1,0 +1,75 @@
+<%- include('../layouts/header') %>
+
+<h2 class="mb-4">Ekim Kararı Al</h2>
+
+<% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            <% errors.forEach(error => { %>
+                <li><%= error.msg %></li>
+            <% }) %>
+        </ul>
+    </div>
+<% } %>
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">Hava Durumu Tabanlı Ekim Kararı</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <strong>Bilgi:</strong> Sistem, seçilen tarla için hava durumu verilerini analiz ederek 
+                    ekim için uygun olup olmadığını belirleyecektir.
+                </div>
+
+                <form method="POST" action="/decisions">
+                    <div class="mb-3">
+                        <label for="farm_id" class="form-label">Tarla Seçin <span class="text-danger">*</span></label>
+                        <select class="form-select" id="farm_id" name="farm_id" required>
+                            <option value="">-- Tarla Seçiniz --</option>
+                            <% if (typeof farms !== 'undefined' && farms.length > 0) { %>
+                                <% farms.forEach(farm => { %>
+                                    <option value="<%= farm.id %>" 
+                                            <%= typeof decision !== 'undefined' && decision.farm_id == farm.id ? 'selected' : '' %>>
+                                        <%= farm.name %> - <%= farm.city %>, <%= farm.district %>
+                                    </option>
+                                <% }) %>
+                            <% } %>
+                        </select>
+                        <% if (typeof farms === 'undefined' || farms.length === 0) { %>
+                            <div class="form-text text-danger">
+                                Önce bir tarla eklemeniz gerekiyor. <a href="/farms/new">Tarla eklemek için tıklayın</a>.
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="crop_type" class="form-label">Ürün Tipi <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="crop_type" name="crop_type" 
+                               value="<%= typeof decision !== 'undefined' && decision.crop_type ? decision.crop_type : '' %>" 
+                               placeholder="Örn: Buğday, Mısır, Pamuk, Domates" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Tarih (Opsiyonel)</label>
+                        <input type="date" class="form-control" id="date" name="date" 
+                               value="<%= typeof decision !== 'undefined' && decision.date ? decision.date : '' %>">
+                        <div class="form-text">Boş bırakılırsa bugünün tarihi kullanılır.</div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/decisions" class="btn btn-secondary">İptal</a>
+                        <button type="submit" class="btn btn-success btn-lg">
+                            🌦️ Hava Durumunu Analiz Et ve Karar Al
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../layouts/footer') %>
+

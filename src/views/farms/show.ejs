@@ -1,0 +1,57 @@
+<%- include('../layouts/header') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Tarla Detayı: <%= farm.name %></h2>
+    <div>
+        <a href="/farms/<%= farm.id %>/edit" class="btn btn-warning">Düzenle</a>
+        <a href="/farms" class="btn btn-secondary">Geri Dön</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Tarla Bilgileri</h4>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Tarla Adı:</dt>
+                    <dd class="col-sm-8"><strong><%= farm.name %></strong></dd>
+
+                    <dt class="col-sm-4">Şehir:</dt>
+                    <dd class="col-sm-8"><%= farm.city %></dd>
+
+                    <dt class="col-sm-4">İlçe:</dt>
+                    <dd class="col-sm-8"><%= farm.district %></dd>
+
+                    <dt class="col-sm-4">Ürün Tipi:</dt>
+                    <dd class="col-sm-8"><%= farm.crop_type || '-' %></dd>
+
+                    <dt class="col-sm-4">Alan:</dt>
+                    <dd class="col-sm-8"><%= farm.area_decare %> dekar</dd>
+
+                    <dt class="col-sm-4">Kayıt Tarihi:</dt>
+                    <dd class="col-sm-8"><%= new Date(farm.created_at).toLocaleDateString('tr-TR', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }) %></dd>
+                </dl>
+
+                <hr>
+
+                <div class="d-grid gap-2">
+                    <a href="/decisions/new?farm_id=<%= farm.id %>" class="btn btn-success btn-lg">
+                        📅 Bu Tarla İçin Ekim Kararı Al
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../layouts/footer') %>
+
