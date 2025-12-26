@@ -12,9 +12,12 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === 'production', // HTTPS'de true olmalı
+    // Production'da reverse proxy varsa (nginx, Cloudflare vb.) secure: false kullanılabilir
+    // Reverse proxy HTTPS'i handle ediyorsa ve X-Forwarded-Proto header'ı varsa
+    secure: process.env.COOKIE_SECURE === 'true' || (process.env.NODE_ENV === 'production' && process.env.COOKIE_SECURE !== 'false'),
     httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000 // 24 saat
+    maxAge: 24 * 60 * 60 * 1000, // 24 saat
+    sameSite: 'lax' // CSRF koruması için
   }
 }));
 

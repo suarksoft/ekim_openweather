@@ -55,7 +55,18 @@ class AuthController {
       const returnTo = req.session.returnTo || '/';
       delete req.session.returnTo;
       
-      res.redirect(returnTo);
+      // Session'ı kaydet ve sonra yönlendir (production'da önemli)
+      req.session.save((err) => {
+        if (err) {
+          console.error('Session save error:', err);
+          return res.render('auth/login', {
+            title: 'Giriş Yap',
+            errors: [{ msg: 'Giriş yapılırken bir hata oluştu. Lütfen tekrar deneyin.' }],
+            email: req.body.email || ''
+          });
+        }
+        res.redirect(returnTo);
+      });
     } catch (error) {
       console.error('Login error:', error);
       res.render('auth/login', {
@@ -106,7 +117,18 @@ class AuthController {
       req.session.userEmail = user.email;
       req.session.userName = user.full_name || user.email;
 
-      res.redirect('/');
+      // Session'ı kaydet ve sonra yönlendir (production'da önemli)
+      req.session.save((err) => {
+        if (err) {
+          console.error('Session save error:', err);
+          return res.render('auth/register', {
+            title: 'Kayıt Ol',
+            errors: [{ msg: 'Kayıt işlemi sırasında bir hata oluştu. Lütfen tekrar deneyin.' }],
+            user: req.body
+          });
+        }
+        res.redirect('/');
+      });
     } catch (error) {
       console.error('Register error:', error);
       res.render('auth/register', {
