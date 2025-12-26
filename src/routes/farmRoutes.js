@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
 const farmController = require('../controllers/farmController');
-const { isAuthenticated } = require('../middleware/auth');
 
 const farmValidation = [
   body('name')
@@ -23,13 +22,13 @@ const farmValidation = [
     .toFloat()
 ];
 
-router.get('/', isAuthenticated, farmController.list);
-router.get('/new', isAuthenticated, farmController.showNewForm);
-router.post('/', isAuthenticated, farmValidation, farmController.create);
-router.get('/:id', isAuthenticated, farmController.show);
-router.get('/:id/edit', isAuthenticated, farmController.showEditForm);
-router.post('/:id', isAuthenticated, farmValidation, farmController.update);
-router.post('/:id/delete', isAuthenticated, farmController.delete);
+router.get('/', farmController.list);
+router.get('/new', farmController.showNewForm);
+router.post('/', farmValidation, farmController.create);
+router.get('/:id', farmController.show);
+router.get('/:id/edit', farmController.showEditForm);
+router.post('/:id', farmValidation, farmController.update);
+router.post('/:id/delete', farmController.delete);
 
 module.exports = router;
 

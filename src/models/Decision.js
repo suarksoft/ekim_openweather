@@ -2,6 +2,16 @@ const pool = require('../config/database');
 
 class Decision {
   static async findAll(userId) {
+    // Auth kaldırıldı - şimdilik göstermelik (tüm kararları göster)
+    if (userId === null) {
+      const result = await pool.query(
+        `SELECT d.*, f.name as farm_name, f.city, f.district
+         FROM planting_decisions d
+         LEFT JOIN farms f ON d.farm_id = f.id
+         ORDER BY d.created_at DESC`
+      );
+      return result.rows;
+    }
     const result = await pool.query(
       `SELECT d.*, f.name as farm_name, f.city, f.district
        FROM planting_decisions d
@@ -14,6 +24,17 @@ class Decision {
   }
 
   static async findById(id, userId) {
+    // Auth kaldırıldı - şimdilik göstermelik (user_id kontrolü yok)
+    if (userId === null) {
+      const result = await pool.query(
+        `SELECT d.*, f.name as farm_name, f.city, f.district, f.crop_type as farm_crop_type
+         FROM planting_decisions d
+         LEFT JOIN farms f ON d.farm_id = f.id
+         WHERE d.id = $1`,
+        [id]
+      );
+      return result.rows[0];
+    }
     const result = await pool.query(
       `SELECT d.*, f.name as farm_name, f.city, f.district, f.crop_type as farm_crop_type
        FROM planting_decisions d
@@ -37,6 +58,15 @@ class Decision {
   }
 
   static async delete(id, userId) {
+    // Auth kaldırıldı - şimdilik göstermelik (user_id kontrolü yok)
+    if (userId === null) {
+      const result = await pool.query(
+        'DELETE FROM planting_decisions WHERE id = $1 RETURNING *',
+        [id]
+      );
+      return result.rows[0];
+    }
+    
     // Önce kullanıcının tarlasına ait olup olmadığını kontrol et
     const decision = await pool.query(
       `SELECT d.id FROM planting_decisions d

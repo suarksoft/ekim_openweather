@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
 const decisionController = require('../controllers/decisionController');
-const { isAuthenticated } = require('../middleware/auth');
 
 const decisionValidation = [
   body('farm_id')
@@ -14,11 +13,11 @@ const decisionValidation = [
     .isLength({ min: 2, max: 100 }).withMessage('Ürün tipi 2-100 karakter arasında olmalıdır.')
 ];
 
-router.get('/', isAuthenticated, decisionController.list);
-router.get('/new', isAuthenticated, decisionController.showNewForm);
-router.post('/', isAuthenticated, decisionValidation, decisionController.create);
-router.get('/:id', isAuthenticated, decisionController.show);
-router.post('/:id/delete', isAuthenticated, decisionController.delete);
+router.get('/', decisionController.list);
+router.get('/new', decisionController.showNewForm);
+router.post('/', decisionValidation, decisionController.create);
+router.get('/:id', decisionController.show);
+router.post('/:id/delete', decisionController.delete);
 
 module.exports = router;
 

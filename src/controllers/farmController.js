@@ -4,7 +4,7 @@ const { validationResult } = require('express-validator');
 class FarmController {
   static async list(req, res) {
     try {
-      const userId = req.session.userId;
+      const userId = null; // Auth kaldırıldı - şimdilik göstermelik
       const farms = await Farm.findAll(userId);
       res.render('farms/list', {
         title: 'Tarlalarım',
@@ -40,7 +40,7 @@ class FarmController {
     }
 
     try {
-      const userId = req.session.userId;
+      const userId = null; // Auth kaldırıldı - şimdilik göstermelik
       await Farm.create(req.body, userId);
       res.redirect('/farms');
     } catch (error) {
@@ -55,7 +55,7 @@ class FarmController {
 
   static async show(req, res) {
     try {
-      const userId = req.session.userId;
+      const userId = null; // Auth kaldırıldı - şimdilik göstermelik
       const farm = await Farm.findById(req.params.id, userId);
       if (!farm) {
         return res.status(404).render('error', {
@@ -80,7 +80,7 @@ class FarmController {
 
   static async showEditForm(req, res) {
     try {
-      const userId = req.session.userId;
+      const userId = null; // Auth kaldırıldı - şimdilik göstermelik
       const farm = await Farm.findById(req.params.id, userId);
       if (!farm) {
         return res.status(404).render('error', {
@@ -108,7 +108,8 @@ class FarmController {
     const errors = validationResult(req);
     
     if (!errors.isEmpty()) {
-      const farm = await Farm.findById(req.params.id).catch(() => null);
+      const userId = null; // Auth kaldırıldı - şimdilik göstermelik
+      const farm = await Farm.findById(req.params.id, userId).catch(() => null);
       return res.render('farms/edit', {
         title: 'Tarla Düzenle',
         farm: { ...farm, ...req.body },
@@ -117,7 +118,7 @@ class FarmController {
     }
 
     try {
-      const userId = req.session.userId;
+      const userId = null; // Auth kaldırıldı - şimdilik göstermelik
       const farm = await Farm.update(req.params.id, req.body, userId);
       if (!farm) {
         return res.status(404).render('error', {
@@ -129,7 +130,8 @@ class FarmController {
       res.redirect('/farms');
     } catch (error) {
       console.error('Farm update error:', error);
-      const farm = await Farm.findById(req.params.id).catch(() => null);
+      const userId = null; // Auth kaldırıldı - şimdilik göstermelik
+      const farm = await Farm.findById(req.params.id, userId).catch(() => null);
       res.render('farms/edit', {
         title: 'Tarla Düzenle',
         farm: { ...farm, ...req.body },
@@ -140,7 +142,7 @@ class FarmController {
 
   static async delete(req, res) {
     try {
-      const userId = req.session.userId;
+      const userId = null; // Auth kaldırıldı - şimdilik göstermelik
       const farm = await Farm.delete(req.params.id, userId);
       if (!farm) {
         return res.status(404).render('error', {

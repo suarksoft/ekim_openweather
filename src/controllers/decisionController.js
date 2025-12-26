@@ -6,7 +6,7 @@ const { validationResult } = require('express-validator');
 class DecisionController {
   static async list(req, res) {
     try {
-      const userId = req.session.userId;
+      const userId = null; // Auth kaldırıldı - şimdilik göstermelik
       const decisions = await Decision.findAll(userId);
       res.render('decisions/list', {
         title: 'Karar Geçmişi',
@@ -24,7 +24,7 @@ class DecisionController {
 
   static async showNewForm(req, res) {
     try {
-      const userId = req.session.userId;
+      const userId = null; // Auth kaldırıldı - şimdilik göstermelik
       const farms = await Farm.findAll(userId);
       res.render('decisions/new', {
         title: 'Ekim Kararı Al',
@@ -46,7 +46,7 @@ class DecisionController {
     const errors = validationResult(req);
     
     if (!errors.isEmpty()) {
-      const userId = req.session.userId;
+      const userId = null; // Auth kaldırıldı - şimdilik göstermelik
       const farms = await Farm.findAll(userId).catch(() => []);
       return res.render('decisions/new', {
         title: 'Ekim Kararı Al',
@@ -57,7 +57,7 @@ class DecisionController {
     }
 
     try {
-      const userId = req.session.userId;
+      const userId = null; // Auth kaldırıldı - şimdilik göstermelik
       // Farm bilgisini al (kullanıcının tarlası olduğundan emin ol)
       const farm = await Farm.findById(req.body.farm_id, userId);
       if (!farm) {
@@ -85,7 +85,7 @@ class DecisionController {
       res.redirect('/decisions');
     } catch (error) {
       console.error('Decision create error:', error);
-      const userId = req.session.userId;
+      const userId = null; // Auth kaldırıldı - şimdilik göstermelik
       const farms = await Farm.findAll(userId).catch(() => []);
       res.render('decisions/new', {
         title: 'Ekim Kararı Al',
@@ -98,7 +98,7 @@ class DecisionController {
 
   static async show(req, res) {
     try {
-      const userId = req.session.userId;
+      const userId = null; // Auth kaldırıldı - şimdilik göstermelik
       const decision = await Decision.findById(req.params.id, userId);
       if (!decision) {
         return res.status(404).render('error', {
@@ -137,7 +137,7 @@ class DecisionController {
 
   static async delete(req, res) {
     try {
-      const userId = req.session.userId;
+      const userId = null; // Auth kaldırıldı - şimdilik göstermelik
       const decision = await Decision.delete(req.params.id, userId);
       if (!decision) {
         return res.status(404).render('error', {
